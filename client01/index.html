@@ -148,6 +148,9 @@
                 data_string += "<br>";
             }
             
+            $('#contentTiles').append('<div class="tileSml tileAud" id="track_container"><img src="img/iconAud.png"/></div>');
+            
+            
             // play the Nth track
             var url_of_closest = tracks_data[nearest_track].permalink_url;
             SC.oEmbed(url_of_closest, {auto_play: true}, document.getElementById("track_container"));  
@@ -169,7 +172,8 @@
 </script>
 
 <button onclick="play_soundclound()">Try it</button>
-<div id="track_container"></div>
+
+<div id="contentTiles"></div>
 <div id="info_container"></div>
 </body>
 </html>
