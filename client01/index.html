@@ -148,12 +148,16 @@
                 data_string += "<br>";
             }
             
-            $('#contentTiles').append('<div class="tileSml tileAud" id="track_container"><img src="img/iconAud.png"/></div>');
+            // get a unique ref for this box, use time in ms
+            var d = new Date();
+            var track_container_id = "track_" + d.getTime(); 
+            
+            $('#contentTiles').append('<div class="tileSml tileAud" id="' + track_container_id + '"><img src="img/iconAud.png"/></div>');
             
             
             // play the Nth track
             var url_of_closest = tracks_data[nearest_track].permalink_url;
-            SC.oEmbed(url_of_closest, {auto_play: true}, document.getElementById("track_container"));  
+            SC.oEmbed(url_of_closest, {auto_play: true}, document.getElementById(track_container_id));  
             
             // add some handy info at the top of the debug
             data_string = "<h3>closest one is #" + nearest_track + "</h3>" + data_string;
