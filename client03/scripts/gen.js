@@ -53,15 +53,11 @@ function showContent() {
 	// Randomise number of tiles to show in demo
 	var $totTiles=1+Math.floor(Math.random()*6);
 	for (var $counter = 0; $counter < $totTiles; $counter++) {
-		var $rndSize=1+Math.floor(Math.random()*4);	
+		var $rndSize=1+Math.floor(Math.random()*2);	
 		switch($rndSize) {
 			case 1:	play_soundclound();
 						break;
 			case 2:	play_places();
-						break;
-			case 3:	$('#contentTiles').append('<div class="tileLge tileImg"><img src="img/iconImg.png"/></div>');
-						break;
-			case 4:	$('#contentTiles').append('<div class="tileLge tileVid"><img src="img/iconVid.png"/></div>');
 						break;
 		}
 	}
@@ -305,11 +301,11 @@ function play_places(){
         var d = new Date();
         var track_container_id = "track_" + d.getTime(); 
         var building_string;
-        building_string += "<div class='building_title'>" + nearest_building.title + "</div>";
-        building_string += "<img src=" + nearest_building.image + " >";
+        building_string = "<div class='building_title'>" + nearest_building.title + "</div>";
+        building_string += "<img class='big_image' src='" + nearest_building.image + "' >";
         building_string += "<div class='building_desc'>" + nearest_building.text + "</div>";
                     
-        $('#contentTiles').append('<div class="tileSml tileAud" id="' + track_container_id + '">' + building_string + '<img src="img/iconAud.png"/></div>');
+        $('#contentTiles').append('<div class="tileSml tileTxt" id="' + track_container_id + '">' + building_string + '<img src="img/iconTxt.png"/></div>');
      
         
         // add some handy info at the top of the debug
