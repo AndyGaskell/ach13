@@ -1,6 +1,7 @@
 body {
 	padding:0;
 	margin:0;	
+	position: relative;
 }
 #wrapper {
 	position:relative;
@@ -27,11 +28,9 @@ header, footer {
 }
 #intro {
 	position:absolute;
-	width:90%;
+	width: 90%;
 	padding:0 5%;
 	top:90px;
-	right:50%;
-	margin-right:-150px;
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:22px;
 	color:#fff;
@@ -132,16 +131,20 @@ footer {
 	height:10px;
 }
 
-#bg1 {
-	position:fixed;
-	top:0;
-	left:0;
-	width:620px;
-	height:620px;
-	z-index:0;
-	overflow:hidden;
+#bg {
+  position: fixed; 
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%;
 }
-#bg1 img {
-	position:fixed;
-	width: 100%;
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
 }

@@ -10,7 +10,7 @@ var my_lon = 0;
 $(document).ready(function(){
 	
 	// Ensure Backgrounds are Good Sized
-	 setBg();
+	 //setBg();
 	
 	// Begin
 	$('#wrapper').on('click', '.grn', function() {
@@ -164,22 +164,7 @@ function beginUI() {
 	});
 }
 
-// Background Image Resize
-window.onresize = function(event) {
-	setBg();
-}
 
-function setBg() {
-	$ww = $(window).width(); 
-	$wh = $(window).height();
-	if($ww>$wh) {
-		$('#bg').css({'width':'auto'});
-		$('#bg').css({'height': $wh + 'px'});
-	}else{
-		$('#bg').css({'width': $ww + 'px'});
-		$('#bg').css({'height':'auto'});
-	}
-}
 
 
 
