@@ -24,6 +24,9 @@ https://www.facebook.com/Aberdeen2017
 
 https://twitter.com/aberdeen2017
 
+Info PDF http://bit.ly/14Bx9mo.
+
+
 Dev Links:
 ----------
 
