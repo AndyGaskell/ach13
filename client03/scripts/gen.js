@@ -7,6 +7,9 @@ SC.initialize({
 var my_lat = 0;
 var my_lon = 0;  
 
+var done_count_soundcloud = 0;
+var prev_building_id = 0;
+
 $(document).ready(function(){
 	
 	
@@ -182,11 +185,17 @@ function play_soundclound(){
             
             // see if this is the closest one
             if ( total_diff < smallest_diff ) {
-                // this one must have the smalles diff
-                smallest_diff = total_diff;
-                // then save this as the closest one
-                nearest_track = count;
-                data_string += "this one is the nearest so far<br>";
+                if (done_count_soundcloud !== count) {
+                
+                    // this one must have the smalles diff
+                    smallest_diff = total_diff;
+                    // then save this as the closest one
+                    nearest_track = count;
+                    data_string += "this one is the nearest so far<br>";
+                    // this is done
+                    done_count_soundcloud = count;
+                    
+                }
             }
             
             // save this tracks data to a tidy array
@@ -277,15 +286,17 @@ function play_places(){
             var total_diff =  Math.abs(lat_diff - lon_diff);       
             data_string += "total_diff: " + total_diff + "<br>";
             
-            // see if this is the closest one
-            if ( total_diff < smallest_diff ) {
-                // this one must have the smalles diff
-                smallest_diff = total_diff;
-                // then save this as the closest one
-                nearest_building.image = val.Image_Link;
-                nearest_building.text = val.Record_Body;
-                nearest_building.title = val.Title;
-                data_string += "this one is the nearest so far<br>";
+            if (val.ID !== prev_building_id) {
+                // see if this is the closest one
+                if ( total_diff < smallest_diff ) {
+                    // this one must have the smalles diff
+                    smallest_diff = total_diff;
+                    // then save this as the closest one
+                    nearest_building.image = val.Image_Link;
+                    nearest_building.text = val.Record_Body;
+                    nearest_building.title = val.Title;
+                    data_string += "this one is the nearest so far<br>";
+                }
             }
             
             // save this tracks data to a tidy array
