@@ -10,146 +10,165 @@
     SC.initialize({
         client_id: "50dbb3d992f26263a4faa948a1b0c598"
     });
-
-
-
-    $(document).ready(function() {
     
+    var my_lat = 0;
+    var my_lon = 0;  
+
+    $(document).ready(function(){
+	
+	    // get location
         // see if their browser supports geolocation
         if (navigator.geolocation){
             // it does, so let's go
-            navigator.geolocation.getCurrentPosition(play_sounds);
+            navigator.geolocation.getCurrentPosition(location_good, location_bad);
+
         }else{
             // boo, we don't know where they are
             alert("Geolocation is not supported by this browser.");
-        }
-
-        function play_sounds(position) {
-            // store the lat and lon
-            var my_lat = position.coords.latitude;
-            var my_lon = position.coords.longitude;
-            
-            // set up all the vars we need
-            var data_string = "<br>";
-            // handy count variable
-            var count = 0;
-            // this is an array to store the tidied data
-            var tracks_data = new Array();
-            // smallest diff, set it to a big default
-            var smallest_diff = 999999999;
-            // index of smallest
-            var nearest_track = 0;
-            
-            // print the lat and lon
-            data_string += "Your latitude is " + my_lat + "<br>";            
-            data_string += "Your longitude is " + my_lon + "<br>";        
-            data_string += "<br>";        
-            
-            // do a search of soundcloud for ach13
-            SC.get("/tracks", { q: 'ach13'}, function(tracks){
-                            
-                // loop through all of the search results
-                for (var i in tracks) {
-                    // make a temp array for this track
-                    var this_track = new Array();
-                    
-                    data_string += tracks[i].permalink_url + "<br>";
-                    data_string += tracks[i].download_url + "<br>";                
-                    data_string += tracks[i].user.username + "<br>";
-                    data_string += tracks[i].tag_list + "<br>";
-                    data_string += tracks[i].created_at + "<br>";
-                    
-                    // save some basic variables to the tidy array
-                    this_track.permalink_url = tracks[i].permalink_url;
-                    this_track.download_url = tracks[i].download_url;
-                    this_track.username = tracks[i].user.username;
-                    
-                    // get the tags
-                    var tag_list = tracks[i].tag_list;
-                    // split the tags
-                    var parts = tag_list.split(" "), i, l;
-                    for (i = 0, l = parts.length; i < l; i += 1) {
-                        // loop through them all
-                        //data_string += "part: " + parts[i] + "<br>";
-                        if ( parts[i].indexOf("geo:lat=") !== -1 ) {
-                            // this one is lat, so we'll save it out
-                            //data_string += "lat: " + parts[i] + "<br>";
-                            var lat = parts[i].substr(8);
-                            data_string += "lat: " + lat + "<br>";
-                            this_track.lat = lat;
-                        }
-                        if ( parts[i].indexOf("geo:lon=") !== -1 ) {
-                            // this one is lon, so we'll save it out                    
-                            //data_string += "lon: " + parts[i] + "<br>";                        
-                            var lon = parts[i].substr(8);
-                            data_string += "lon: " + lon + "<br>";
-                            this_track.lon = lon;                        
-                        }                    
-                    }
-                    
-                    // find out the diff between here and there
-                    // lat diff
-                    var lat_diff =  Math.abs(lat - my_lat);
-                    data_string += "lat_diff: " + lat_diff + " (" + lat + " - " + my_lat + ")<br>";
-                    // lon diff
-                    var lon_diff =  Math.abs(lon - my_lon);
-                    data_string += "lon_diff: " + lon_diff + " (" + lon + " - " + my_lon + ")<br>";
-                    // total diff
-                    var total_diff =  Math.abs(lat_diff - lon_diff);   
-                    this_track.total_diff = total_diff;      
-                    data_string += "total_diff: " + total_diff + "<br>";
-                    
-                    // see if this is the closest one
-                    if ( total_diff < smallest_diff ) {
-                        // this one must have the smalles diff
-                        smallest_diff = total_diff;
-                        // then save this as the closest one
-                        nearest_track = count;
-                        data_string += "this one is the nearest so far<br>";
-                    }
-                    
-                    // save this tracks data to a tidy array
-                    tracks_data[count] = this_track;
-                    
-                    data_string += "<br>";
-                    count++;
-                }
-
-                data_string += "<hr/>";
-                
-                for (var i in tracks_data) {
-                    // print out the tidy array data
-                    data_string += "Sound #" + i + "<br>";
-                    data_string += "permalink_url: " + tracks_data[i].permalink_url + "<br>";
-                    data_string += "download_url: " + tracks_data[i].download_url + "<br>";                
-                    data_string += "username: " + tracks_data[i].username + "<br>";
-                    data_string += "lat: " + tracks_data[i].lat + "<br>";
-                    data_string += "lon: " + tracks_data[i].lon + "<br>";
-                    data_string += "total_diff: " + tracks_data[i].total_diff + "<br>";                    
-                    data_string += "<br>";
-                }
-                
-                // play the Nth track
-                var url_of_closest = tracks_data[nearest_track].permalink_url;
-                SC.oEmbed(url_of_closest, {auto_play: true}, document.getElementById("track_container"));  
-                
-                // add some handy info at the top of the debug
-                data_string = "<h3>closest one is #" + nearest_track + "</h3>" + data_string;
-                data_string = "<h3>Count: " + count + "</h3>" + data_string;
-                
-                $('#info_container').html(data_string);
-                
-            });
-
-            
-        }    
-        
+        }	    
 
 
     });
+    
+    function location_good (position) {
+        alert('location good');    
+            // store the lat and lon
+            my_lat = position.coords.latitude;
+            my_lon = position.coords.longitude;    
+    }
+    function location_bad() {
+        alert('location bad');
+    
+    }
+    
+    function play_soundclound(){
+
+    
+
+
+
+        
+        // set up all the vars we need
+        var data_string = "<br>";
+        // handy count variable
+        var count = 0;
+        // this is an array to store the tidied data
+        var tracks_data = new Array();
+        // smallest diff, set it to a big default
+        var smallest_diff = 999999999;
+        // index of smallest
+        var nearest_track = 0;
+        
+        // print the lat and lon
+        data_string += "Your latitude is " + my_lat + "<br>";            
+        data_string += "Your longitude is " + my_lon + "<br>";        
+        data_string += "<br>";        
+        
+        // do a search of soundcloud for ach13
+        SC.get("/tracks", { q: 'ach13'}, function(tracks){
+                        
+            // loop through all of the search results
+            for (var i in tracks) {
+                // make a temp array for this track
+                var this_track = new Array();
+                
+                data_string += tracks[i].permalink_url + "<br>";
+                data_string += tracks[i].download_url + "<br>";                
+                data_string += tracks[i].user.username + "<br>";
+                data_string += tracks[i].tag_list + "<br>";
+                data_string += tracks[i].created_at + "<br>";
+                
+                // save some basic variables to the tidy array
+                this_track.permalink_url = tracks[i].permalink_url;
+                this_track.download_url = tracks[i].download_url;
+                this_track.username = tracks[i].user.username;
+                
+                // get the tags
+                var tag_list = tracks[i].tag_list;
+                // split the tags
+                var parts = tag_list.split(" "), i, l;
+                for (i = 0, l = parts.length; i < l; i += 1) {
+                    // loop through them all
+                    //data_string += "part: " + parts[i] + "<br>";
+                    if ( parts[i].indexOf("geo:lat=") !== -1 ) {
+                        // this one is lat, so we'll save it out
+                        //data_string += "lat: " + parts[i] + "<br>";
+                        var lat = parts[i].substr(8);
+                        data_string += "lat: " + lat + "<br>";
+                        this_track.lat = lat;
+                    }
+                    if ( parts[i].indexOf("geo:lon=") !== -1 ) {
+                        // this one is lon, so we'll save it out                    
+                        //data_string += "lon: " + parts[i] + "<br>";                        
+                        var lon = parts[i].substr(8);
+                        data_string += "lon: " + lon + "<br>";
+                        this_track.lon = lon;                        
+                    }                    
+                }
+                
+                // find out the diff between here and there
+                // lat diff
+                var lat_diff =  Math.abs(lat - my_lat);
+                data_string += "lat_diff: " + lat_diff + " (" + lat + " - " + my_lat + ")<br>";
+                // lon diff
+                var lon_diff =  Math.abs(lon - my_lon);
+                data_string += "lon_diff: " + lon_diff + " (" + lon + " - " + my_lon + ")<br>";
+                // total diff
+                var total_diff =  Math.abs(lat_diff - lon_diff);   
+                this_track.total_diff = total_diff;      
+                data_string += "total_diff: " + total_diff + "<br>";
+                
+                // see if this is the closest one
+                if ( total_diff < smallest_diff ) {
+                    // this one must have the smalles diff
+                    smallest_diff = total_diff;
+                    // then save this as the closest one
+                    nearest_track = count;
+                    data_string += "this one is the nearest so far<br>";
+                }
+                
+                // save this tracks data to a tidy array
+                tracks_data[count] = this_track;
+                
+                data_string += "<br>";
+                count++;
+            }
+
+            data_string += "<hr/>";
+            
+            for (var i in tracks_data) {
+                // print out the tidy array data
+                data_string += "Sound #" + i + "<br>";
+                data_string += "permalink_url: " + tracks_data[i].permalink_url + "<br>";
+                data_string += "download_url: " + tracks_data[i].download_url + "<br>";                
+                data_string += "username: " + tracks_data[i].username + "<br>";
+                data_string += "lat: " + tracks_data[i].lat + "<br>";
+                data_string += "lon: " + tracks_data[i].lon + "<br>";
+                data_string += "total_diff: " + tracks_data[i].total_diff + "<br>";                    
+                data_string += "<br>";
+            }
+            
+            // play the Nth track
+            var url_of_closest = tracks_data[nearest_track].permalink_url;
+            SC.oEmbed(url_of_closest, {auto_play: true}, document.getElementById("track_container"));  
+            
+            // add some handy info at the top of the debug
+            data_string = "<h3>closest one is #" + nearest_track + "</h3>" + data_string;
+            data_string = "<h3>Count: " + count + "</h3>" + data_string;
+            
+            $('#info_container').html(data_string);
+            
+        });
+
+            
+ 
+        
+
+
+    }
 </script>
 
-
+<button onclick="play_soundclound()">Try it</button>
 <div id="track_container"></div>
 <div id="info_container"></div>
 </body>

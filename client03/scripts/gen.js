@@ -1,4 +1,12 @@
 // JavaScript Document
+
+SC.initialize({
+    client_id: "50dbb3d992f26263a4faa948a1b0c598"
+});
+
+var my_lat = 0;
+var my_lon = 0;  
+
 $(document).ready(function(){
 	
 	// Ensure Backgrounds are Good Sized
@@ -10,17 +18,41 @@ $(document).ready(function(){
 		beginUI();
 		
 		// Request Soundcloud Audio
-		mainAudio();
+		//mainAudio();
 		
 		// Begin Demo Loop
-		$doDemo=1;
-		if($doDemo==1) {
-			$showDemoContent=setInterval('showDemoContent()',5000);
-		}
-		
+		//$doDemo=1;
+		//if($doDemo==1) {
+		//	$showDemoContent=setInterval('showDemoContent()',5000);
+		//}
+		$showContent=setInterval('showContent()',5000);
 	});
+	
+    // get location
+    // see if their browser supports geolocation
+    if (navigator.geolocation){
+        // it does, so let's go
+        navigator.geolocation.getCurrentPosition(location_good, location_bad);
+
+    }else{
+        // boo, we don't know where they are
+        alert("Geolocation is not supported by this browser.");
+    }	    
+
 
 });
+
+
+function location_good (position) {
+    alert('location good');    
+        // store the lat and lon
+        my_lat = position.coords.latitude;
+        my_lon = position.coords.longitude;    
+}
+function location_bad() {
+    alert('location bad');
+}
+
 
 function addContent($objType, $objURL, $objIMG, $objTxt) {
 	// Check Type and Set Accordingly
@@ -70,6 +102,30 @@ function showDemoContent() {
 	$goScroll = parseInt($(document).height());
 	  $("html, body").animate({ scrollTop:$goScroll }, 4000);
 }
+
+// Put content tiles on the page
+function showContent() {
+	// Randomise number of tiles to show in demo
+	var $totTiles=1+Math.floor(Math.random()*6);
+	for (var $counter = 0; $counter < $totTiles; $counter++) {
+		var $rndSize=1+Math.floor(Math.random()*4);	
+		switch($rndSize) {
+			case 1:	$('#contentTiles').append('<div class="tileSml tileAud"><img src="img/iconAud.png"/></div>');
+						break;
+			case 2:	$('#contentTiles').append('<div class="tileLge tileTxt"><img src="img/iconTxt.png"/></div>');
+						break;
+			case 3:	$('#contentTiles').append('<div class="tileLge tileImg"><img src="img/iconImg.png"/></div>');
+						break;
+			case 4:	$('#contentTiles').append('<div class="tileLge tileVid"><img src="img/iconVid.png"/></div>');
+						break;
+		}
+	}
+	// Content Scroll
+	$goScroll = parseInt($(document).height());
+	$("html, body").animate({ scrollTop:$goScroll }, 4000);
+}
+
+
 
 // Start begining audio on the page
 function mainAudio() {
