@@ -44,11 +44,12 @@ $(document).ready(function(){
 
 
 function location_good (position) {
-    alert('location good');    
-        // store the lat and lon
-        my_lat = position.coords.latitude;
-        my_lon = position.coords.longitude;    
+    //alert('location good');    
+    // store the lat and lon
+    my_lat = position.coords.latitude;
+    my_lon = position.coords.longitude;    
 }
+
 function location_bad() {
     alert('location bad');
 }
@@ -122,7 +123,7 @@ function showContent() {
 	}
 	// Content Scroll
 	$goScroll = parseInt($(document).height());
-	$("html, body").animate({ scrollTop:$goScroll }, 4000);
+	$("html, body").animate({ scrollTop:$goScroll }, 10000);
 }
 
 
