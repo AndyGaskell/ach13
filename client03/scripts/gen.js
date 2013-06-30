@@ -57,7 +57,7 @@ function showContent() {
 		switch($rndSize) {
 			case 1:	play_soundclound();
 						break;
-			case 2:	$('#contentTiles').append('<div class="tileLge tileTxt"><img src="img/iconTxt.png"/></div>');
+			case 2:	play_places();
 						break;
 			case 3:	$('#contentTiles').append('<div class="tileLge tileImg"><img src="img/iconImg.png"/></div>');
 						break;
@@ -234,3 +234,90 @@ function play_soundclound(){
     });
 }
 
+
+function play_places(){
+
+
+    // set up all the vars we need
+    var data_string = "<br>";
+    // handy count variable
+    var count = 0;
+    // this is an array to store the tidied data
+    var building_data = new Array();
+    // smallest diff, set it to a big default
+    var smallest_diff = 999999999;
+    // index of smallest
+    var nearest_building = new Array();
+    
+    // print the lat and lon
+    data_string += "Your latitude is " + my_lat + "<br>";            
+    data_string += "Your longitude is " + my_lon + "<br>";        
+    data_string += "<br>";        
+    
+    
+    $.getJSON('https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=acc_smr&query=select%20*%20from%20%60swdata%60%20limit%2010', function(data) {
+        var items = [];
+        $.each(data, function(key, val) {
+            
+
+            data_string += "Title" + val.Title + "<br>";
+            data_string += "Latitude" + val.Latitude + "<br>";
+            data_string += "Longitude" + val.Longitude + "<br>";
+            data_string += "Record Body" + val.Record_Body + "<br>";
+            data_string += "Image Link" + val.Image_Link + "<br>";
+            data_string += "<br>";
+            var lat = val.Latitude;
+            var lon = val.Longitude;
+            
+            
+            // find out the diff between here and there
+            // lat diff
+            var lat_diff =  Math.abs(lat - my_lat);
+            data_string += "lat_diff: " + lat_diff + " (" + lat + " - " + my_lat + ")<br>";
+            // lon diff
+            var lon_diff =  Math.abs(lon - my_lon);
+            data_string += "lon_diff: " + lon_diff + " (" + lon + " - " + my_lon + ")<br>";
+            // total diff
+            var total_diff =  Math.abs(lat_diff - lon_diff);       
+            data_string += "total_diff: " + total_diff + "<br>";
+            
+            // see if this is the closest one
+            if ( total_diff < smallest_diff ) {
+                // this one must have the smalles diff
+                smallest_diff = total_diff;
+                // then save this as the closest one
+                nearest_building.image = val.Image_Link;
+                nearest_building.text = val.Record_Body;
+                nearest_building.title = val.Title;
+                data_string += "this one is the nearest so far<br>";
+            }
+            
+            // save this tracks data to a tidy array
+            //tracks_data[count] = this_track;
+            
+            data_string += "<br>";
+            count++;                
+            
+            
+        });
+        
+        // get a unique ref for this box, use time in ms
+        var d = new Date();
+        var track_container_id = "track_" + d.getTime(); 
+        var building_string;
+        building_string += "<div class='building_title'>" + nearest_building.title + "</div>";
+        building_string += "<img src=" + nearest_building.image + " >";
+        building_string += "<div class='building_desc'>" + nearest_building.text + "</div>";
+                    
+        $('#contentTiles').append('<div class="tileSml tileAud" id="' + track_container_id + '">' + building_string + '<img src="img/iconAud.png"/></div>');
+     
+        
+        // add some handy info at the top of the debug
+        data_string = "<h3>Count: " + count + "</h3>" + data_string;
+        
+        
+        $('#info_container').html(data_string);
+
+    });
+
+}
