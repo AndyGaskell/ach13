@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Geoloc</title>
+</head>
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://connect.soundcloud.com/sdk.js"></script>
+<script>
+  SC.initialize({
+    client_id: "50dbb3d992f26263a4faa948a1b0c598"
+  });
+
+  $("#loadTracks").live("click", function(){
+    SC.get("/tracks", {limit: 1}, function(tracks){
+      var track = tracks[0];
+      SC.oEmbed(track.uri, document.getElementById("track"));
+    });
+  });
+</script>
+
+<input type="button" id="loadTracks" class="button big" value="Get hottest track" />
+<div id="track"></div>
+
+</body>
+</html>
