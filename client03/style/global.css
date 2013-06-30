@@ -40,7 +40,7 @@ header, footer {
 #contentTiles {
 	position:relative;
 	display:block;
-	padding:60px 0 0 0;
+	padding: 60px 0 0 0;
 }
 #contentTiles > div {
 	position:absolute;
@@ -54,16 +54,18 @@ header, footer {
 	transition:all 3s;
 	background:#444;
 	opacity:0.9;
+	padding: 20px;
+	overflow: hidden;
 }
 #contentTiles > div.tileSml {
 	position:relative;
 	top:auto;
-	height:70px;
+	min-height:70px;
 }
 #contentTiles > div.tileLge {
 	position:relative;
 	top:auto;
-	height:150px;
+	min-height:150px;
 }
 .tileTxt > img, .tileVid > img, .tileImg > img {
 	width:30px;
