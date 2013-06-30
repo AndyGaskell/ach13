@@ -296,6 +296,7 @@ function play_places(){
                     nearest_building.text = val.Record_Body;
                     nearest_building.title = val.Title;
                     data_string += "this one is the nearest so far<br>";
+                    prev_building_id = val.ID;
                 }
             }
             
