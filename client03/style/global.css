@@ -143,6 +143,5 @@ footer {
 }
 #bg1 img {
 	position:fixed;
-	height:510px;
-	width:auto;
+	width: 100%;
 }
