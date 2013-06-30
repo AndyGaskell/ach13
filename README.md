@@ -9,7 +9,13 @@ Code for Aberdeen Culture Hackathon 2013 - #ach13
 Client code running in the browser
 ----------------------------------
 
-https://rawgithub.com/AndyGaskell/ach13/master/client/index.html
+####v1
+https://rawgithub.com/AndyGaskell/ach13/master/client01/index.html
+
+####v2
+https://rawgithub.com/AndyGaskell/ach13/master/client02/index.html
+
+
 
 
 
